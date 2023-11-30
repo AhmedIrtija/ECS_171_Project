@@ -52,7 +52,7 @@ def predict():
 
     allergen_probabilities = {allergen: f"{prob:.2f}%" for allergen, prob in zip(mlb.classes_, 100 * predictions[0])}
 
-    filtered_allergens = {allergen: prob for allergen, prob in allergen_probabilities.items() if float(prob[:-1]) >= 80}
+    filtered_allergens = {allergen: prob for allergen, prob in allergen_probabilities.items() if float(prob[:-1]) >= 60}
 
     # Display the result on result.html
     return render_template('result.html', allergen_probabilities=filtered_allergens)
