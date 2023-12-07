@@ -13,6 +13,7 @@ To install the required libraries, run the following command:
 ```bash
 pip install tensorflow keras scikit-learn pandas matplotlib seaborn plotly
 ```
+
 ## License
 MIT License
 
