@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
 import pandas as pd
+import webbrowser
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import MultiLabelBinarizer
 from tensorflow.keras.models import load_model
+
 
 app = Flask(__name__)
 
@@ -55,7 +57,7 @@ def predict():
     filtered_allergens = {allergen: prob for allergen, prob in allergen_probabilities.items() if float(prob[:-1]) >= 60}
 
     # Display the result on result.html
-    return render_template('result.html', allergen_probabilities=filtered_allergens)
+    return render_template('index.html', allergen_probabilities=filtered_allergens)
 
 if __name__ == '__main__':
     app.run(debug=True)

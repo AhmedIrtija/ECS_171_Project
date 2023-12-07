@@ -9,7 +9,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: url('/static/Background.gif') no-repeat center center fixed;
+            background-size: auto;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,22 +20,26 @@
         }
 
         .container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.7);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            cursor: move; 
+            position: absolute;
         }
 
         h2 {
             text-align: center;
             color: #333;
+            opacity: 1;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             color: #555;
+            opacity: 1;
         }
 
         input {
@@ -44,6 +49,7 @@
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+            opacity: 1;
         }
 
         button {
@@ -54,38 +60,108 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            opacity: 1;
         }
 
-        /* Style for the back button */
+        .result-container {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .result-container p {
+            margin: 0;
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+
         .back-button {
             background-color: #ffffff;
             margin-top: 10px;
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" id="draggableContainer">
         <h2>Food Product Prediction</h2>
         <form action="/" method="post">
             <label for="foodProductName">Food Product Name:</label>
             <input type="text" id="foodProductName" name="food_product" required>
-        
+
             <label for="mainIngredient">Main Ingredient:</label>
             <input type="text" id="mainIngredient" name="main_ingredient" required>
-        
+
             <label for="sweetener">Sweetener:</label>
             <input type="text" id="sweetener" name="sweetener" required>
-        
+
             <label for="fatOil">Fat/Oil:</label>
             <input type="text" id="fatOil" name="fat_oil" required>
-        
+
             <label for="seasoning">Seasoning:</label>
             <input type="text" id="seasoning" name="seasoning" required>
-        
-            <button type="submit">Predict</button>
-        </form> 
-    </div>
-</body>
 
-</html>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if allergen_probabilities %}
+            <div class="result-container">
+                <h2>Food Product Prediction Result</h2>
+                {% for allergen, probability in allergen_probabilities.items() %}
+                    <p>{{ allergen }}: {{ probability }}</p>
+                {% endfor %}
+                <a href="/" class="back-button button">Go Back</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Make the container draggable
+        dragElement(document.getElementById("draggableContainer"));
+    
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                // if present, the header is where you move the DIV from:
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+    
+            function dragMouseDown(e) {
+                e = e || window.event;
+                // Check if the mouse click is on a form element, if yes, don't drag
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') {
+                    return;
+                }
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+    
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+    
+            function closeDragElement() {
+                // stop moving when the mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+    </script>
