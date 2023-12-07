@@ -11,5 +11,5 @@ The dataset used for training the model includes various features of food produc
 ## Installation
 To install the required libraries, run the following command:
 ```bash
-pip install tensorflow keras scikit-learn pandas matplotlib seaborn plotly
+pip install tensorflow keras scikit-learn pandas matplotlib seaborn plotly optuna
 ```
