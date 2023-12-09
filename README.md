@@ -1,6 +1,8 @@
 # ECS_171_Project
 Roadmap: https://docs.google.com/document/d/1fnuUqUReX523lE60Eyy1irhIoOTXOLFkFjawcLrq-1c/edit?usp=sharing
+
 Video Demo: https://drive.google.com/file/d/1cXr3at4lERmZVvaAg5bhp7f-R-569Gmi/view?usp=sharing 
+
 ## Dataset
 The dataset used for training the model includes various features of food products such as the main ingredient, sweetener, fat/oil, seasoning, and the associated allergens. The goal is to predict the allergens based on these features. 
 ## Overview
